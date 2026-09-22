@@ -23,6 +23,9 @@ class Character:
         self.y = y
         self.move_flag = 1
 
+    def draw(self):
+        self.image.draw(self.x, self.y)
+
 # TODO: 배경매니저 클래스 제작
 # 인스턴스 속성
 # - 배경을 담을 공간: 리스트
@@ -46,7 +49,7 @@ character = Character('character.png', 400, 300)
 # 테스트용
 while True:
     clear_canvas()
-    character.image.draw(character.x,character.y)
+    character.draw()
     update_canvas()
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
