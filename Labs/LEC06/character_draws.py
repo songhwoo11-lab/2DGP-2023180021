@@ -29,9 +29,9 @@ class Character:
 
     def moveCircle(self):
         global x, y, theta, r
-        theta += 0.1
-        self.x = x + r * cos(theta)
-        self.y = y + r * sin(theta)
+        theta += radians(5)
+        self.x = x + r * cos(theta - radians(90))
+        self.y = y + r * sin(theta - radians(90))
         print('moveCircle')
     def moveRectangle(self):
         print('moveRectangle')
