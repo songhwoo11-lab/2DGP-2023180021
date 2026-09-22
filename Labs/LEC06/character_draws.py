@@ -26,6 +26,13 @@ class Character:
     def draw(self):
         self.image.draw(self.x, self.y)
 
+    def moveCircle(self):
+        print('moveCircle')
+    def moveRectangle(self):
+        print('moveRectangle')
+    def moveTriangle(self):
+        print('moveTriangle')
+
 # TODO: 배경매니저 클래스 제작
 # 인스턴스 속성
 # - 배경을 담을 공간: 리스트
@@ -67,5 +74,9 @@ while True:
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
 
+    character.moveCircle()
+    character.moveRectangle()
+    character.moveTriangle()
+
     delay(5) # 테스트를 위해 5초로 설정. 실제로는 0.01초로 설정해야 함
-    close_canvas() # 테스트를 위해 안에 넣어둠. 실제로는 while문 밖에 있어야 함
+close_canvas()
