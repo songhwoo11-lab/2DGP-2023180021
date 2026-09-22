@@ -38,7 +38,8 @@ class Character:
 #       - y: 중심점 y좌표
 # - draw: 배경 그리기
 class BgManager:
-    pass
+    def __init__(self):
+        self.backgrounds = []
 
 # TODO: 원 -> 사각형 -> 삼각형 운동 반복하는 코드 만들기
 # 구현 아이디어: Character의 움직임 플래그를 이용하여 작동 시켜라
