@@ -40,9 +40,14 @@ class Character:
 class BgManager:
     def __init__(self):
         self.backgrounds = []
+
     def append(self, imagefilename, x, y):
         image = load_image(imagefilename)
         self.backgrounds.append((image, x, y))
+
+    def draw(self):
+        for image, x, y in self.backgrounds:
+            image.draw(x, y)
 
 # TODO: 원 -> 사각형 -> 삼각형 운동 반복하는 코드 만들기
 # 구현 아이디어: Character의 움직임 플래그를 이용하여 작동 시켜라
@@ -53,20 +58,14 @@ bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
 
-grass = load_image('grass.png')
-sky = load_image('sky.png')
-
 # 테스트용
 while True:
     clear_canvas()
-    sky.draw(400,300)
-    grass.draw(400,30)
+    bgmanager.draw()
     character.draw()
     update_canvas()
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
-    for background in bgmanager.backgrounds:
-        print(background)
 
     delay(5) # 테스트를 위해 5초로 설정. 실제로는 0.01초로 설정해야 함
     close_canvas() # 테스트를 위해 안에 넣어둠. 실제로는 while문 밖에 있어야 함
