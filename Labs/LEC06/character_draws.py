@@ -45,14 +45,18 @@ class BgManager:
 # 원 - 1, 사각형 - 2, 삼각형 - 3으로 두고 원래 자리로 돌아올 때마다 플래그를 바꿔준다
 open_canvas(800, 600)
 character = Character('character.png', 400, 300)
+grass = load_image('grass.png')
+sky = load_image('sky.png')
 
 # 테스트용
 while True:
     clear_canvas()
+    sky.draw(400,300)
+    grass.draw(400,30)
     character.draw()
     update_canvas()
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
-    
+
     delay(5) # 테스트를 위해 5초로 설정. 실제로는 0.01초로 설정해야 함
     close_canvas() # 테스트를 위해 안에 넣어둠. 실제로는 while문 밖에 있어야 함
