@@ -65,11 +65,11 @@ class BgManager:
 # 구현 아이디어: Character의 움직임 플래그를 이용하여 작동 시켜라
 # 원 - 1, 사각형 - 2, 삼각형 - 3으로 두고 원래 자리로 돌아올 때마다 플래그를 바꿔준다
 open_canvas(800, 600)
-character = Character('character.png', 400, 300)
+character = Character('character.png', 400, 200)
 bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
-x, y, theta, r = 300, 300, 0, 100
+x, y, theta, r = 400, 300, 0, 100
 
 # 테스트용
 while True:
