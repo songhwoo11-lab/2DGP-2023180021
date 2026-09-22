@@ -1,5 +1,6 @@
 # 실습 과제 진행
 from pico2d import *
+from math import *
 
 # TODO: 캐릭터 클래스 제작
 # 인스턴스 속성
@@ -27,6 +28,10 @@ class Character:
         self.image.draw(self.x, self.y)
 
     def moveCircle(self):
+        global x, y, theta, r
+        theta += 0.1
+        self.x = x + r * cos(theta)
+        self.y = y + r * sin(theta)
         print('moveCircle')
     def moveRectangle(self):
         print('moveRectangle')
@@ -64,6 +69,7 @@ character = Character('character.png', 400, 300)
 bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
+x, y, theta, r = 300, 300, 0, 100
 
 # 테스트용
 while True:
@@ -75,8 +81,8 @@ while True:
     print(f"움직임 플래그: {character.move_flag}")
 
     character.moveCircle()
-    character.moveRectangle()
-    character.moveTriangle()
+    # character.moveRectangle()
+    # character.moveTriangle()
 
-    delay(5) # 테스트를 위해 5초로 설정. 실제로는 0.01초로 설정해야 함
+    delay(0.1)
 close_canvas()
