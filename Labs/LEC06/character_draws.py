@@ -33,8 +33,8 @@ class Character:
     def moveRectangle(self):
         print('moveRectangle')
         # self.moveRight(1)
-        self.moveUp(1)
-        # self.moveLeft(1)
+        # self.moveUp(1)
+        self.moveLeft(1)
         # self.moveDown(1)
     def moveRight(self, x):
         self.x += x
@@ -43,6 +43,7 @@ class Character:
         self.y += y
         print('move up')
     def moveLeft(self, x):
+        self.x -= x
         print('move left')
     def moveDown(self, y):
         print('move down')
