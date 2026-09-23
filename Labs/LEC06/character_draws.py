@@ -44,8 +44,6 @@ class Character:
             count = 0
             return
         count += 1
-        
-
     def moveRight(self, x):
         self.x += x
     def moveUp(self, y):
@@ -57,10 +55,12 @@ class Character:
 
     def moveTriangle(self):
         print('moveTriangle')
-        self.moveRight(1)
+        # self.moveRight(1)
         self.moveUpLeft(1)
-        self.moveDownLeft(1)    
+        # self.moveDownLeft(1)    
     def moveUpLeft(self, x):
+        self.x -= x
+        self.y += 2*x
         print('move upleft')
     def moveDownLeft(self, x):
         print('move downleft')
@@ -98,8 +98,8 @@ while True:
     print(f"움직임 플래그: {character.move_flag}")
 
     # character.moveCircle()
-    character.moveRectangle()
-    # character.moveTriangle()
+    # character.moveRectangle()
+    character.moveTriangle()
 
     delay(0.01)
 close_canvas()
