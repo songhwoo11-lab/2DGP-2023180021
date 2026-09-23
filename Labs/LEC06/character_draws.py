@@ -56,13 +56,15 @@ class Character:
     def moveTriangle(self):
         print('moveTriangle')
         # self.moveRight(1)
-        self.moveUpLeft(1)
-        # self.moveDownLeft(1)    
+        # self.moveUpLeft(1)
+        self.moveDownLeft(1)    
     def moveUpLeft(self, x):
         self.x -= x
         self.y += 2*x
         print('move upleft')
     def moveDownLeft(self, x):
+        self.x -= x
+        self.y -= 2*x
         print('move downleft')
 
 class BgManager:
