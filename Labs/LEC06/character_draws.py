@@ -33,10 +33,11 @@ class Character:
     def moveRectangle(self):
         print('moveRectangle')
         self.moveRight(1)
-        self.moveUp(1)
-        self.moveLeft(1)
-        self.moveDown(1)
+        # self.moveUp(1)
+        # self.moveLeft(1)
+        # self.moveDown(1)
     def moveRight(self, x):
+        self.x += x
         print('move right')
     def moveUp(self, y):
         print('move up')
@@ -90,5 +91,5 @@ while True:
     character.moveRectangle()
     character.moveTriangle()
 
-    delay(0.1)
+    delay(0.01)
 close_canvas()
