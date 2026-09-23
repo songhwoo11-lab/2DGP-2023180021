@@ -30,12 +30,20 @@ class Character:
             character.moveRectangle()
         elif character.move_flag == 3:
             character.moveTriangle()
+        else:
+            pass # 멈춤
 
     def moveCircle(self):
         global x, y, theta, r
-        theta += radians(5)
+        theta += radians(2)
         self.x = x + r * cos(theta - radians(90))
         self.y = y + r * sin(theta - radians(90))
+        if abs(2 * pi - theta) < 1e-10:
+            self.x = 400
+            self.y = 200
+            theta = 0
+            self.move_flag = 0
+            
 
     def moveRectangle(self):
         global count
@@ -101,7 +109,7 @@ bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
 x, y, theta, r, count = 400, 300, 0, 100, 0
-
+character.move_flag = 1
 
 # 테스트용
 while True:
@@ -112,7 +120,6 @@ while True:
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
 
-    character.move_flag = 3
     character.move()
 
     delay(0.01)
