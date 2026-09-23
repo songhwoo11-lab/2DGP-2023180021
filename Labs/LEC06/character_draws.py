@@ -54,18 +54,24 @@ class Character:
         self.y -= y
 
     def moveTriangle(self):
-        print('moveTriangle')
-        # self.moveRight(1)
-        # self.moveUpLeft(1)
-        self.moveDownLeft(1)    
+        global count
+        if count < 100:
+            self.moveRight(1)
+        elif count < 150:
+            self.moveUpLeft(1)
+        elif count < 200:
+            self.moveDownLeft(1)    
+        else:
+            count = 0
+            return
+        count += 1
     def moveUpLeft(self, x):
         self.x -= x
         self.y += 2*x
-        print('move upleft')
     def moveDownLeft(self, x):
         self.x -= x
         self.y -= 2*x
-        print('move downleft')
+
 
 class BgManager:
     def __init__(self):
