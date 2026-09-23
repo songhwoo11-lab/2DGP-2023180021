@@ -79,6 +79,7 @@ class Character:
             self.moveDownLeft(1)    
         else:
             count = 0
+            self.move_flag = 0
             return
         count += 1
     def moveUpLeft(self, x):
@@ -110,7 +111,7 @@ bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
 x, y, theta, r, count = 400, 300, 0, 100, 0
-character.move_flag = 2
+character.move_flag = 3
 
 # 테스트용
 while True:
