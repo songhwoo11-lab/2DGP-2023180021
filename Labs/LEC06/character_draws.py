@@ -3,20 +3,16 @@ from pico2d import *
 from math import *
 
 # TODO: 캐릭터 클래스 제작
-# 인스턴스 속성
-# - 캐릭터 이미지
-# - 중심 좌표 x, y
-# - Move에 대한 플래그
 # 메서드
-# - __init__: 인스턴스 속성 지정
-#    - 인수
-#       - imagefilename: 이미지 파일 이름
-#       - x: 중심점 x좌표
-#       - y: 중심점 y좌표
-# - draw: 그리기 함수 호출
 # - moveRectangle: 사각형 경로로 이동
-# - moveCircle: 원 경로로 이동
+#   - moveRight: 오른쪽으로 이동
+#   - moveUp: 위로 이동
+#   - moveLeft: 좌로 이동
+#   - moveDown: 아래로 이동
 # - moveTriangle: 삼각형 경로로 이동
+#   - moveRight: 오른쪽으로 이동
+#   - moveUpLeft: 북서 방향으로 이동
+#   - moveDownLeft: 남서 방향으로 이동
 class Character:
     def __init__(self, imagefilename, x, y):
         self.image = load_image(imagefilename)
@@ -33,22 +29,32 @@ class Character:
         self.x = x + r * cos(theta - radians(90))
         self.y = y + r * sin(theta - radians(90))
         print('moveCircle')
+
     def moveRectangle(self):
         print('moveRectangle')
+        self.moveRight(1)
+        self.moveUp(1)
+        self.moveLeft(1)
+        self.moveDown(1)
+    def moveRight(self, x):
+        print('move right')
+    def moveUp(self, y):
+        print('move up')
+    def moveLeft(self, x):
+        print('move left')
+    def moveDown(self, y):
+        print('move down')
+
     def moveTriangle(self):
         print('moveTriangle')
+        self.moveRight(1)
+        self.moveUpLeft(1)
+        self.moveDownLeft(1)    
+    def moveUpLeft(self, x):
+        print('move upleft')
+    def moveDownLeft(self, x):
+        print('move downleft')
 
-# TODO: 배경매니저 클래스 제작
-# 인스턴스 속성
-# - 배경을 담을 공간: 리스트
-# 메서드
-# - __init__: 인스턴스 속성 지정
-# - append: 배경 추가하기
-#   - 인수
-#       - imagefilename: 이미지 파일 이름
-#       - x: 중심점 x좌표
-#       - y: 중심점 y좌표
-# - draw: 배경 그리기
 class BgManager:
     def __init__(self):
         self.backgrounds = []
@@ -80,9 +86,9 @@ while True:
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
 
-    character.moveCircle()
-    # character.moveRectangle()
-    # character.moveTriangle()
+    # character.moveCircle()
+    character.moveRectangle()
+    character.moveTriangle()
 
     delay(0.1)
 close_canvas()
