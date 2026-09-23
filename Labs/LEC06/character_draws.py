@@ -31,23 +31,29 @@ class Character:
         print('moveCircle')
 
     def moveRectangle(self):
-        print('moveRectangle')
-        # self.moveRight(1)
-        # self.moveUp(1)
-        # self.moveLeft(1)
-        self.moveDown(1)
+        global count
+        if count < 100:
+            self.moveRight(1)
+        elif count < 200:
+            self.moveUp(1)
+        elif count < 300:
+            self.moveLeft(1)
+        elif count < 400:
+            self.moveDown(1)
+        else:
+            count = 0
+            return
+        count += 1
+        
+
     def moveRight(self, x):
         self.x += x
-        print('move right')
     def moveUp(self, y):
         self.y += y
-        print('move up')
     def moveLeft(self, x):
         self.x -= x
-        print('move left')
     def moveDown(self, y):
         self.y -= y
-        print('move down')
 
     def moveTriangle(self):
         print('moveTriangle')
@@ -79,7 +85,8 @@ character = Character('character.png', 400, 200)
 bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
-x, y, theta, r = 400, 300, 0, 100
+x, y, theta, r, count = 400, 300, 0, 100, 0
+
 
 # 테스트용
 while True:
