@@ -28,7 +28,6 @@ class Character:
         theta += radians(5)
         self.x = x + r * cos(theta - radians(90))
         self.y = y + r * sin(theta - radians(90))
-        print('moveCircle')
 
     def moveRectangle(self):
         global count
@@ -105,9 +104,13 @@ while True:
     print(f"Character Position: ({character.x}, {character.y})")
     print(f"움직임 플래그: {character.move_flag}")
 
-    # character.moveCircle()
-    # character.moveRectangle()
-    character.moveTriangle()
+    character.move_flag = 3
+    if character.move_flag == 1:
+        character.moveCircle()
+    elif character.move_flag == 2:
+        character.moveRectangle()
+    elif character.move_flag == 3:
+       character.moveTriangle()
 
     delay(0.01)
 close_canvas()
