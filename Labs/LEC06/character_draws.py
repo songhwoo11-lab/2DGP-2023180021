@@ -23,6 +23,14 @@ class Character:
     def draw(self):
         self.image.draw(self.x, self.y)
 
+    def move(self):
+        if character.move_flag == 1:
+            character.moveCircle()
+        elif character.move_flag == 2:
+            character.moveRectangle()
+        elif character.move_flag == 3:
+            character.moveTriangle()
+
     def moveCircle(self):
         global x, y, theta, r
         theta += radians(5)
@@ -105,12 +113,7 @@ while True:
     print(f"움직임 플래그: {character.move_flag}")
 
     character.move_flag = 3
-    if character.move_flag == 1:
-        character.moveCircle()
-    elif character.move_flag == 2:
-        character.moveRectangle()
-    elif character.move_flag == 3:
-       character.moveTriangle()
+    character.move()
 
     delay(0.01)
 close_canvas()
