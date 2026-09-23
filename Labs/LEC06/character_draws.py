@@ -42,7 +42,7 @@ class Character:
             self.x = 400
             self.y = 200
             theta = 0
-            self.move_flag = 0
+            self.move_flag = 2
             
 
     def moveRectangle(self):
@@ -57,7 +57,7 @@ class Character:
             self.moveDown(1)
         else:
             count = 0
-            self.move_flag = 0
+            self.move_flag = 3
             return
         count += 1
     def moveRight(self, x):
@@ -79,7 +79,7 @@ class Character:
             self.moveDownLeft(1)    
         else:
             count = 0
-            self.move_flag = 0
+            self.move_flag = 1
             return
         count += 1
     def moveUpLeft(self, x):
@@ -111,7 +111,6 @@ bgmanager = BgManager()
 bgmanager.append('sky.png', 400, 300)
 bgmanager.append('grass.png', 400, 30)
 x, y, theta, r, count = 400, 300, 0, 100, 0
-character.move_flag = 3
 
 # 테스트용
 while True:
