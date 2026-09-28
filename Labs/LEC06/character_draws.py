@@ -2,6 +2,8 @@
 from pico2d import *
 import math
 
+cnt = 0
+repeat = 5
 width, height = 800, 600
 CircleX, CircleY = width // 2, height // 2
 CircleRadius = 100
@@ -31,7 +33,6 @@ def move_circle():
         draw_boy(x, y)
 
 def move_top():
-    print("top")
     for x in range(rectangleX, rectangleX + rectangleWidth, stride):
         draw_boy(x, rectangleY + rectangleHeight)
 
@@ -71,8 +72,9 @@ boy = load_image('character.png')
 sky = load_image('sky.png')
 grass = load_image('grass.png')
 
-while True:
+while cnt < repeat:
     move_circle()
     move_rectangle()
     move_triangle()
+    cnt += 1
 close_canvas()
