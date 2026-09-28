@@ -1,6 +1,7 @@
 # 실습 과제 진행
 from pico2d import *
 import math
+import sys
 
 cnt = 0
 repeat = 5
@@ -69,6 +70,12 @@ def move_triangle():
     move_bottomTRIANGLE()
     move_topleft()
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        repeat = int(sys.argv[1])
+    else:
+        print("<usage>: ./character_draws.py 운동_반복_횟수")
+        exit(1)
+
     open_canvas(width, height)
     boy = load_image('character.png')
     sky = load_image('sky.png')
