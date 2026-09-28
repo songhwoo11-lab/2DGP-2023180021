@@ -72,8 +72,7 @@ sky = load_image('sky.png')
 grass = load_image('grass.png')
 
 while True:
-    # move_circle()
-    # move_rectangle()
+    move_circle()
+    move_rectangle()
     move_triangle()
-    break
 close_canvas()
