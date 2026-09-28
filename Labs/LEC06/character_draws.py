@@ -28,6 +28,7 @@ def move_top():
 
 def draw_boy(x, y):
     clear_canvas()
+    sky.draw(400,330)
     grass.draw(400,30)
     boy.draw(x, y)
     update_canvas()
@@ -73,6 +74,7 @@ def move_triangle():
 
 open_canvas(800, 600)
 boy = load_image('character.png')
+sky = load_image('sky.png')
 grass = load_image('grass.png')
 
 while True:
