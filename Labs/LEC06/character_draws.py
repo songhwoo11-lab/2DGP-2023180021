@@ -56,11 +56,15 @@ def move_topleft():
     print("topleft")
     for y in range(50, TriangleY, stride):
         draw_boy(50 + 3.5 * (y - 50) // stride, y)
+def move_bottomTRIANGLE():
+    print("bottom")
+    for x in range(50 + 700, 50, -stride):
+        draw_boy(x, 50)
 
 def move_triangle():
     print('triangle')
     move_topright()
-    move_bottom()
+    move_bottomTRIANGLE()
     move_topleft()
 
 open_canvas(800, 600)
