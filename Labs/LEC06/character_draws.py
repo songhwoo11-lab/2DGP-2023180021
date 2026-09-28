@@ -28,6 +28,7 @@ def move_top():
 
 def draw_boy(x, y):
     clear_canvas()
+    grass.draw(400,30)
     boy.draw(x, y)
     update_canvas()
     delay(0.01)
@@ -72,6 +73,7 @@ def move_triangle():
 
 open_canvas(800, 600)
 boy = load_image('character.png')
+grass = load_image('grass.png')
 
 while True:
     # move_circle()
