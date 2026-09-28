@@ -3,6 +3,7 @@ from pico2d import *
 import math
 
 CircleX, CircleY = 400, 300
+CircleRadius = 100
 stride = 5
 rectangleX = 50
 rectangleY = 50
@@ -12,8 +13,8 @@ rectangleHeight = 500
 def move_circle():
     for degree in range(0, 360, stride):
         theta = math.radians(degree)
-        x = CircleX + 100 * math.cos(theta)
-        y = CircleY + 100 * math.sin(theta)
+        x = CircleX + CircleRadius * math.cos(theta)
+        y = CircleY + CircleRadius * math.sin(theta)
         draw_boy(x, y)
 
 def move_top():
