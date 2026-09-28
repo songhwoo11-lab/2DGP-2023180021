@@ -2,8 +2,10 @@
 from pico2d import *
 import math
 
+stride = 5
+
 def move_circle():
-    for degree in range(360):
+    for degree in range(0, 360, stride):
         theta = math.radians(degree)
         x = 400 + 100 * math.cos(theta)
         y = 300 + 100 * math.sin(theta)
@@ -11,7 +13,7 @@ def move_circle():
 
 def move_top():
     print("top")
-    for x in range(50, 750, 5):
+    for x in range(50, 750, stride):
         draw_boy(x, 550)
 
 def draw_boy(x, y):
@@ -22,15 +24,15 @@ def draw_boy(x, y):
 
 def move_right():
     print("right")
-    for y in range(550, 50, -5):
+    for y in range(550, 50, -stride):
         draw_boy(750, y)
 def move_bottom():
     print("bottom")
-    for x in range(750, 50, -5):
+    for x in range(750, 50, -stride):
         draw_boy(x, 50)
 def move_left():
     print("left")
-    for y in range(50, 550, 5):
+    for y in range(50, 550, stride):
             draw_boy(50, y)
 
 def move_rectangle():
@@ -41,12 +43,12 @@ def move_rectangle():
 
 def move_topright():
     print("topright")
-    for y in range(550, 50, -5):
-        draw_boy(400 + 3.5 * (550 - y) // 5, y)
+    for y in range(550, 50, -stride):
+        draw_boy(400 + 3.5 * (550 - y) // stride, y)
 def move_topleft():
     print("topleft")
     for y in range(50, 550, 5):
-        draw_boy(50 + 3.5 * (y - 50) // 5, y)
+        draw_boy(50 + 3.5 * (y - 50) // stride, y)
 
 def move_triangle():
     print('triangle')
@@ -56,7 +58,6 @@ def move_triangle():
 
 open_canvas(800, 600)
 boy = load_image('character.png')
-
 
 while True:
     # move_circle()
