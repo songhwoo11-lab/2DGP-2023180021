@@ -45,6 +45,8 @@ def move_topright():
         draw_boy(400 + 3.5 * (550 - y) // 5, y)
 def move_topleft():
     print("topleft")
+    for y in range(50, 550, 5):
+        draw_boy(50 + 3.5 * (y - 50) // 5, y)
 
 def move_triangle():
     print('triangle')
