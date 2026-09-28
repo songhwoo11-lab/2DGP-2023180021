@@ -4,18 +4,20 @@ import math
 
 cnt = 0
 repeat = 5
+
+stride = 5
 width, height = 800, 600
+
 CircleX, CircleY = width // 2, height // 2
 CircleRadius = 100
-stride = 5
-rectangleX = 50
-rectangleY = 50
+
+rectangleX, rectangleY = 50, 50
 rectangleWidth = width - 100
 rectangleHeight = height - 100
+
 TriangleX, TriangleY = width // 2, height - 50
 TriangleBottomDegree = width - 100
-TriangleMINX = 50
-TriangleMINY = 50
+TriangleMINX, TriangleMINY = 50, 50
 
 def draw_boy(x, y):
     clear_canvas()
@@ -66,15 +68,15 @@ def move_triangle():
     move_topright()
     move_bottomTRIANGLE()
     move_topleft()
+if __name__ == '__main__':
+    open_canvas(width, height)
+    boy = load_image('character.png')
+    sky = load_image('sky.png')
+    grass = load_image('grass.png')
 
-open_canvas(width, height)
-boy = load_image('character.png')
-sky = load_image('sky.png')
-grass = load_image('grass.png')
-
-while cnt < repeat:
-    move_circle()
-    move_rectangle()
-    move_triangle()
-    cnt += 1
-close_canvas()
+    while cnt < repeat:
+       move_circle()
+       move_rectangle()
+       move_triangle()
+       cnt += 1
+    close_canvas()
