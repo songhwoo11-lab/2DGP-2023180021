@@ -41,6 +41,8 @@ def move_rectangle():
 
 def move_topright():
     print("topright")
+    for y in range(550, 50, -5):
+        draw_boy(400 + 3.5 * (550 - y) // 5, y)
 def move_topleft():
     print("topleft")
 
