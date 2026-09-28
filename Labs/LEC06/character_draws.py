@@ -3,6 +3,8 @@ from pico2d import *
 import math
 
 stride = 5
+rectangleX = 50
+rectangleY = 50
 
 def move_circle():
     for degree in range(0, 360, stride):
@@ -13,7 +15,7 @@ def move_circle():
 
 def move_top():
     print("top")
-    for x in range(50, 750, stride):
+    for x in range(rectangleX, rectangleX + 700, stride):
         draw_boy(x, 550)
 
 def draw_boy(x, y):
@@ -24,15 +26,15 @@ def draw_boy(x, y):
 
 def move_right():
     print("right")
-    for y in range(550, 50, -stride):
+    for y in range(rectangleY + 500, rectangleY, -stride):
         draw_boy(750, y)
 def move_bottom():
     print("bottom")
-    for x in range(750, 50, -stride):
+    for x in range(rectangleX + 700, rectangleX, -stride):
         draw_boy(x, 50)
 def move_left():
     print("left")
-    for y in range(50, 550, stride):
+    for y in range(rectangleY, rectangleY + 500, stride):
             draw_boy(50, y)
 
 def move_rectangle():
