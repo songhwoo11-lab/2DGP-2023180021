@@ -11,6 +11,8 @@ rectangleWidth = 700
 rectangleHeight = 500
 TriangleX, TriangleY = 400, 550
 TriangleBottomDegree = 700
+TriangleMINX = 50
+TriangleMINY = 50
 
 def move_circle():
     for degree in range(0, 360, stride):
@@ -52,15 +54,15 @@ def move_rectangle():
 def move_topright():
     print("topright")
     for y in range(TriangleY, 50, -stride):
-        draw_boy(TriangleX + ((TriangleBottomDegree / 2) / ((TriangleY - 50) // stride)) * (TriangleY - y) // stride, y)
+        draw_boy(TriangleX + ((TriangleBottomDegree / 2) / ((TriangleY - TriangleMINY) // stride)) * (TriangleY - y) // stride, y)
 def move_topleft():
     print("topleft")
-    for y in range(50, TriangleY, stride):
-        draw_boy(50 + ((TriangleBottomDegree / 2) / ((TriangleY - 50) // stride)) * (y - 50) // stride, y)
+    for y in range(TriangleMINY, TriangleY, stride):
+        draw_boy(50 + ((TriangleBottomDegree / 2) / ((TriangleY - TriangleMINY) // stride)) * (y - TriangleMINY) // stride, y)
 def move_bottomTRIANGLE():
     print("bottom")
-    for x in range(50 + 700, 50, -stride):
-        draw_boy(x, 50)
+    for x in range(TriangleMINX + TriangleBottomDegree, TriangleMINX, -stride):
+        draw_boy(x, TriangleMINY)
 
 def move_triangle():
     print('triangle')
