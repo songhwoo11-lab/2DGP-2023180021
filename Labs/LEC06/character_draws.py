@@ -9,7 +9,7 @@ stride = 5
 width, height = 800, 600
 
 CircleX, CircleY = width // 2, height // 2
-CircleRadius = 100
+CircleRadius = 200
 
 rectangleX, rectangleY = 50, 50
 rectangleWidth = width - 100
@@ -29,7 +29,7 @@ def draw_boy(x, y):
 
 def move_circle():
     for degree in range(0, 360, stride):
-        theta = math.radians(degree)
+        theta = math.radians(degree + 90)
         x = CircleX + CircleRadius * math.cos(theta)
         y = CircleY + CircleRadius * math.sin(theta)
         draw_boy(x, y)
