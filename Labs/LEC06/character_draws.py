@@ -2,15 +2,16 @@
 from pico2d import *
 import math
 
-CircleX, CircleY = 400, 300
+width, height = 800, 600
+CircleX, CircleY = width // 2, height // 2
 CircleRadius = 100
 stride = 5
 rectangleX = 50
 rectangleY = 50
-rectangleWidth = 700
-rectangleHeight = 500
-TriangleX, TriangleY = 400, 550
-TriangleBottomDegree = 700
+rectangleWidth = width - 100
+rectangleHeight = height - 100
+TriangleX, TriangleY = width // 2, height - 50
+TriangleBottomDegree = width - 100
 TriangleMINX = 50
 TriangleMINY = 50
 
@@ -65,7 +66,7 @@ def move_triangle():
     move_bottomTRIANGLE()
     move_topleft()
 
-open_canvas(800, 600)
+open_canvas(width, height)
 boy = load_image('character.png')
 sky = load_image('sky.png')
 grass = load_image('grass.png')
