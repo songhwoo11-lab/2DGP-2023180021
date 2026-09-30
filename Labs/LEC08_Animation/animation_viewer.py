@@ -48,6 +48,7 @@ class PlaybackState:
 	action_index: int = 0
 	frame_index: int = 0
 	elapsed: float = 0.0
+	paused: bool = False
 
 
 ACTIONS = tuple(
@@ -177,5 +178,26 @@ def open_viewer_canvas():
 	pico2d.open_canvas(*CANVAS_SIZE)
 
 
-def should_close(events):
-	return any(event.type == pico2d.SDL_QUIT for event in events)
+def reset_playback(state):
+	state.action_index = 0
+	state.frame_index = 0
+	state.elapsed = 0.0
+	state.paused = False
+
+
+def handle_events(events, state):
+	for event in events:
+		if event.type == pico2d.SDL_QUIT:
+			return True
+		if event.type != pico2d.SDL_KEYDOWN:
+			continue
+
+		key = event.key.keysym.sym
+		if key == pico2d.SDLK_ESCAPE:
+			return True
+		if key == pico2d.SDLK_SPACE:
+			state.paused = not state.paused
+		elif key == pico2d.SDLK_r:
+			reset_playback(state)
+
+	return False
