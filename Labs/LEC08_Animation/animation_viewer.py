@@ -94,6 +94,15 @@ def advance_frame(state):
 	return True
 
 
+def advance_to_next_action(state):
+	if state.action_index + 1 >= len(ACTIONS):
+		return False
+
+	state.action_index += 1
+	state.frame_index = 0
+	return True
+
+
 def load_sheet():
 	return pico2d.load_image(str(ASSET_PATH))
 
