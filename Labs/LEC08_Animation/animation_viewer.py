@@ -18,6 +18,7 @@ ACTION_NAMES = tuple(f"Action {index}" for index in range(1, len(ACTION_BANDS) +
 FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
 ACTION_FRAME_COUNTS = (6, 6, 4, 4, 6, 6)
+CANVAS_SIZE = (1280, 720)
 
 
 def get_frame_rect(action_index, frame_index):
@@ -44,3 +45,11 @@ def draw_background(canvas_width, canvas_height):
 		*BACKGROUND_COLOR,
 		filled=True,
 	)
+
+
+def open_viewer_canvas():
+	pico2d.open_canvas(*CANVAS_SIZE)
+
+
+def should_close(events):
+	return any(event.type == pico2d.SDL_QUIT for event in events)
