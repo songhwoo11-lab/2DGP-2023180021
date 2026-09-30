@@ -65,6 +65,25 @@ def get_frame_rect(action_index, frame_index):
 	return frame.source_x, frame.source_top, frame.source_width, frame.source_height
 
 
+def load_sheet():
+	return pico2d.load_image(str(ASSET_PATH))
+
+
+def draw_frame(sheet, action_index, frame_index, x, y, draw_width, draw_height):
+	frame = ACTIONS[action_index].frames[frame_index]
+	source_bottom = SHEET_SIZE[1] - frame.source_top - frame.source_height
+	sheet.clip_draw(
+		frame.source_x,
+		source_bottom,
+		frame.source_width,
+		frame.source_height,
+		x,
+		y,
+		draw_width,
+		draw_height,
+	)
+
+
 def draw_background(canvas_width, canvas_height):
 	pico2d.draw_rectangle(
 		0,
