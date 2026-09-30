@@ -25,6 +25,8 @@ FRAME_INTERVAL = 0.12
 MAX_VISIBLE_HEIGHT = 179
 MIN_VISIBLE_HEIGHT_RATIO = 0.5
 FIT_MARGIN_RATIO = 0.9
+STATUS_FONT_PATH = Path("C:/Windows/Fonts/malgun.ttf")
+STATUS_FONT_SIZE = 24
 
 
 @dataclass(frozen=True)
@@ -148,6 +150,16 @@ def draw_current_frame(sheet, state, canvas_width, canvas_height):
 		draw_width,
 		draw_height,
 	)
+
+
+def load_status_font():
+	return pico2d.load_font(str(STATUS_FONT_PATH), STATUS_FONT_SIZE)
+
+
+def draw_status(font, state, canvas_width, canvas_height):
+	action_number = state.action_index + 1
+	status = f"액션 {action_number} / {len(ACTIONS)}"
+	font.draw(24, canvas_height - 30, status, color=(255, 255, 255))
 
 
 def draw_background(canvas_width, canvas_height):
