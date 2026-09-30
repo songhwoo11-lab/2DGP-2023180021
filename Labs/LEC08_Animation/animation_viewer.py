@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+import time
 
 import pico2d
 
@@ -210,3 +211,33 @@ def handle_events(events, state):
 			reset_playback(state)
 
 	return False
+
+
+def run_viewer():
+	open_viewer_canvas()
+	try:
+		sheet = load_sheet()
+		font = load_status_font()
+		state = PlaybackState()
+		previous_time = time.perf_counter()
+		running = True
+
+		while running:
+			events = pico2d.get_events()
+			running = not handle_events(events, state)
+			current_time = time.perf_counter()
+			update_playback(state, current_time - previous_time)
+			previous_time = current_time
+
+			pico2d.clear_canvas()
+			draw_background(*CANVAS_SIZE)
+			draw_current_frame(sheet, state, *CANVAS_SIZE)
+			draw_status(font, state, *CANVAS_SIZE)
+			pico2d.update_canvas()
+			pico2d.delay(0.01)
+	finally:
+		pico2d.close_canvas()
+
+
+if __name__ == "__main__":
+	run_viewer()
