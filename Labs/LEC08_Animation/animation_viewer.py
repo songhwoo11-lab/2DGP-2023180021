@@ -16,7 +16,7 @@ ACTION_BANDS = (
 	(800, 1000),
 	(980, 1180),
 )
-ACTION_NAMES = tuple(f"Action {index}" for index in range(1, len(ACTION_BANDS) + 1))
+ACTION_NAMES = ("대기", "걷기", "달리기", "점프", "공격", "피격")
 FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
 FRAME_HEIGHT = 200
@@ -169,7 +169,7 @@ def load_status_font():
 
 def draw_status(font, state, canvas_width, canvas_height):
 	action_number = state.action_index + 1
-	status = f"액션 {action_number} / {len(ACTIONS)}"
+	status = f"액션 {action_number} / {len(ACTIONS)} · {ACTIONS[state.action_index].name}"
 	font.draw(24, canvas_height - 30, status, color=(255, 255, 255))
 
 
