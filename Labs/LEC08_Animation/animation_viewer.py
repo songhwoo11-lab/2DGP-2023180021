@@ -119,6 +119,15 @@ def advance_to_next_action(state):
 	return True
 
 
+def update_playback(state, delta_time):
+	if state.paused:
+		return
+
+	for _ in range(consume_frame_ticks(state, delta_time)):
+		if not advance_frame(state):
+			advance_to_next_action(state)
+
+
 def load_sheet():
 	return pico2d.load_image(str(ASSET_PATH))
 
