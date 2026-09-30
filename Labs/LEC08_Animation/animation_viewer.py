@@ -23,6 +23,8 @@ FRAME_HEIGHT = 200
 ACTION_FRAME_COUNTS = (6, 6, 4, 4, 6, 6)
 CANVAS_SIZE = (1280, 720)
 FRAME_INTERVAL = 0.12
+ACTION_REPETITIONS = 5
+ACTION_REST_DURATION = 1.0
 MAX_VISIBLE_HEIGHT = 179
 MIN_VISIBLE_HEIGHT_RATIO = 0.5
 FIT_MARGIN_RATIO = 0.9
@@ -49,6 +51,9 @@ class PlaybackState:
 	action_index: int = 0
 	frame_index: int = 0
 	elapsed: float = 0.0
+	repetition_count: int = 0
+	rest_elapsed: float = 0.0
+	resting: bool = False
 	paused: bool = False
 
 
@@ -117,16 +122,37 @@ def advance_frame(state):
 def advance_to_next_action(state):
 	state.action_index = (state.action_index + 1) % len(ACTIONS)
 	state.frame_index = 0
+	state.elapsed = 0.0
+	state.repetition_count = 0
+	state.rest_elapsed = 0.0
+	state.resting = False
 	return True
 
 
 def update_playback(state, delta_time):
+	if delta_time < 0:
+		raise ValueError("delta time cannot be negative")
 	if state.paused:
 		return
 
+	if state.resting:
+		time_to_next_action = ACTION_REST_DURATION - state.rest_elapsed
+		if delta_time < time_to_next_action:
+			state.rest_elapsed += delta_time
+			return
+		delta_time -= time_to_next_action
+		advance_to_next_action(state)
+
 	for _ in range(consume_frame_ticks(state, delta_time)):
 		if not advance_frame(state):
-			advance_to_next_action(state)
+			state.repetition_count += 1
+			if state.repetition_count < ACTION_REPETITIONS:
+				state.frame_index = 0
+			else:
+				state.resting = True
+				state.rest_elapsed = 0.0
+				state.elapsed = 0.0
+				break
 
 
 def load_sheet():
@@ -169,7 +195,9 @@ def load_status_font():
 
 def draw_status(font, state, canvas_width, canvas_height):
 	action_number = state.action_index + 1
-	status = f"액션 {action_number} / {len(ACTIONS)} · {ACTIONS[state.action_index].name}"
+	repetition = min(state.repetition_count + 1, ACTION_REPETITIONS)
+	phase = "1초 휴식" if state.resting else f"{repetition}/{ACTION_REPETITIONS}"
+	status = f"액션 {action_number} / {len(ACTIONS)} · {ACTIONS[state.action_index].name} · {phase}"
 	font.draw(24, canvas_height - 30, status, color=(255, 255, 255))
 
 
@@ -192,6 +220,9 @@ def reset_playback(state):
 	state.action_index = 0
 	state.frame_index = 0
 	state.elapsed = 0.0
+	state.repetition_count = 0
+	state.rest_elapsed = 0.0
+	state.resting = False
 	state.paused = False
 
 
