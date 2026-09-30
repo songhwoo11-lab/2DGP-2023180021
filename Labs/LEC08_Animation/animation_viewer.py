@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pico2d
+
 
 ASSET_PATH = Path(__file__).resolve().with_name("AnimationSheet.png")
 SHEET_SIZE = (1800, 1200)
@@ -30,4 +32,15 @@ def get_frame_rect(action_index, frame_index):
 		frame_top,
 		FRAME_WIDTH,
 		frame_bottom - frame_top,
+	)
+
+
+def draw_background(canvas_width, canvas_height):
+	pico2d.draw_rectangle(
+		0,
+		0,
+		canvas_width,
+		canvas_height,
+		*BACKGROUND_COLOR,
+		filled=True,
 	)
