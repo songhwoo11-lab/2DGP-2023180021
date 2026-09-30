@@ -85,6 +85,15 @@ def consume_frame_ticks(state, delta_time):
 	return frame_ticks
 
 
+def advance_frame(state):
+	last_frame_index = len(ACTIONS[state.action_index].frames) - 1
+	if state.frame_index >= last_frame_index:
+		return False
+
+	state.frame_index += 1
+	return True
+
+
 def load_sheet():
 	return pico2d.load_image(str(ASSET_PATH))
 
