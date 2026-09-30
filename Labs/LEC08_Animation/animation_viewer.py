@@ -135,6 +135,21 @@ def draw_frame(sheet, action_index, frame_index, x, y, draw_width, draw_height):
 	)
 
 
+def draw_current_frame(sheet, state, canvas_width, canvas_height):
+	scale = calculate_scale(canvas_width, canvas_height)
+	draw_width = round(FRAME_WIDTH * scale)
+	draw_height = round(FRAME_HEIGHT * scale)
+	draw_frame(
+		sheet,
+		state.action_index,
+		state.frame_index,
+		round(canvas_width / 2),
+		round(canvas_height / 2),
+		draw_width,
+		draw_height,
+	)
+
+
 def draw_background(canvas_width, canvas_height):
 	pico2d.draw_rectangle(
 		0,
