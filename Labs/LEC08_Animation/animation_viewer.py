@@ -36,6 +36,12 @@ class Action:
 	frames: tuple[Frame, ...]
 
 
+@dataclass
+class PlaybackState:
+	action_index: int = 0
+	frame_index: int = 0
+
+
 ACTIONS = tuple(
 	Action(
 		name=action_name,
