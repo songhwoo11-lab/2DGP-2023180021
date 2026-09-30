@@ -15,3 +15,4 @@ ACTION_BANDS = (
 ACTION_NAMES = tuple(f"Action {index}" for index in range(1, len(ACTION_BANDS) + 1))
 FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
+ACTION_FRAME_COUNTS = (6, 6, 4, 4, 6, 6)
