@@ -95,10 +95,7 @@ def advance_frame(state):
 
 
 def advance_to_next_action(state):
-	if state.action_index + 1 >= len(ACTIONS):
-		return False
-
-	state.action_index += 1
+	state.action_index = (state.action_index + 1) % len(ACTIONS)
 	state.frame_index = 0
 	return True
 
