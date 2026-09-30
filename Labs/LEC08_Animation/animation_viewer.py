@@ -12,3 +12,4 @@ ACTION_BANDS = (
 	(800, 990),
 	(980, 1180),
 )
+ACTION_NAMES = tuple(f"Action {index}" for index in range(1, len(ACTION_BANDS) + 1))
