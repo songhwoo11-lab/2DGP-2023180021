@@ -16,7 +16,7 @@ ACTION_BANDS = (
 	(800, 1000),
 	(980, 1180),
 )
-ACTION_NAMES = ("대기", "걷기", "달리기", "점프", "공격", "피격")
+ACTION_NAMES = ("Repulsion", "Roll", "Slide", "Squat", "Throw2", "Work2")
 FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
 FRAME_HEIGHT = 200
