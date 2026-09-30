@@ -18,9 +18,13 @@ ACTION_BANDS = (
 ACTION_NAMES = tuple(f"Action {index}" for index in range(1, len(ACTION_BANDS) + 1))
 FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
+FRAME_HEIGHT = 200
 ACTION_FRAME_COUNTS = (6, 6, 4, 4, 6, 6)
 CANVAS_SIZE = (1280, 720)
 FRAME_INTERVAL = 0.12
+MAX_VISIBLE_HEIGHT = 179
+MIN_VISIBLE_HEIGHT_RATIO = 0.5
+FIT_MARGIN_RATIO = 0.9
 
 
 @dataclass(frozen=True)
@@ -71,6 +75,18 @@ def get_frame_rect(action_index, frame_index):
 
 	frame = ACTIONS[action_index].frames[frame_index]
 	return frame.source_x, frame.source_top, frame.source_width, frame.source_height
+
+
+def calculate_scale(canvas_width, canvas_height):
+	if canvas_width <= 0 or canvas_height <= 0:
+		raise ValueError("canvas dimensions must be positive")
+
+	target_scale = canvas_height * MIN_VISIBLE_HEIGHT_RATIO / MAX_VISIBLE_HEIGHT
+	fit_scale = min(
+		canvas_width * FIT_MARGIN_RATIO / FRAME_WIDTH,
+		canvas_height * FIT_MARGIN_RATIO / FRAME_HEIGHT,
+	)
+	return min(target_scale, fit_scale)
 
 
 def consume_frame_ticks(state, delta_time):
