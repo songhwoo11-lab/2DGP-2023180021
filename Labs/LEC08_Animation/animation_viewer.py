@@ -20,6 +20,7 @@ FRAME_COLUMNS = tuple(576 + index * 190 for index in range(6))
 FRAME_WIDTH = 180
 ACTION_FRAME_COUNTS = (6, 6, 4, 4, 6, 6)
 CANVAS_SIZE = (1280, 720)
+FRAME_INTERVAL = 0.12
 
 
 @dataclass(frozen=True)
@@ -40,6 +41,7 @@ class Action:
 class PlaybackState:
 	action_index: int = 0
 	frame_index: int = 0
+	elapsed: float = 0.0
 
 
 ACTIONS = tuple(
@@ -69,6 +71,18 @@ def get_frame_rect(action_index, frame_index):
 
 	frame = ACTIONS[action_index].frames[frame_index]
 	return frame.source_x, frame.source_top, frame.source_width, frame.source_height
+
+
+def consume_frame_ticks(state, delta_time):
+	if delta_time < 0:
+		raise ValueError("delta time cannot be negative")
+
+	state.elapsed += delta_time
+	frame_ticks = 0
+	while state.elapsed + 1e-9 >= FRAME_INTERVAL:
+		state.elapsed -= FRAME_INTERVAL
+		frame_ticks += 1
+	return frame_ticks
 
 
 def load_sheet():
