@@ -305,10 +305,19 @@ def update_frame(state: PlaybackState, delta_time: float) -> None:
 
 
 def update_position(
-    state: PlaybackState, animation: Animation, delta_time: float
+    state: PlaybackState,
+    animation: Animation,
+    delta_time: float,
+    screen_width: int,
 ) -> None:
     if animation.moves:
         state.position_x += MOVE_SPEED * delta_time
+        half_width = max(frame.width for frame in animation.frames) * SCALE / 2
+        right_edge = screen_width + half_width
+        if state.position_x > right_edge:
+            travel = screen_width + half_width * 2
+            overflow = (state.position_x - right_edge) % travel
+            state.position_x = -half_width + overflow
 
 
 def main() -> None:
@@ -331,7 +340,7 @@ def main() -> None:
             previous_time = current_time
             update_frame(playback, delta_time)
             animation = ANIMATIONS[playback.animation_index]
-            update_position(playback, animation, delta_time)
+            update_position(playback, animation, delta_time, screen_width)
 
             clear_canvas()
             draw_current_frame(
