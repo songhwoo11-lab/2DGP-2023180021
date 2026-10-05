@@ -250,7 +250,7 @@ def draw_frame(
 ) -> None:
     sprite_sheet.clip_draw(
         frame.x,
-        525 - frame.y - frame.height,
+        SHEET_HEIGHT - frame.y - frame.height,
         frame.width,
         frame.height,
         center_x,
@@ -324,7 +324,7 @@ def update_position(
     delta_time: float,
     screen_width: int,
 ) -> None:
-    if animation.moves:
+    if animation.moves and state.pause_remaining == 0.0:
         state.position_x += MOVE_SPEED * delta_time
         half_width = max(frame.width for frame in animation.frames) * SCALE / 2
         right_edge = screen_width + half_width
