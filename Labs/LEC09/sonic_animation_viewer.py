@@ -192,6 +192,7 @@ def main() -> None:
 
     open_canvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     try:
+        sprite_sheet = load_image(str(SPRITE_PATH))
         while handle_events():
             delay(0.01)
     finally:
