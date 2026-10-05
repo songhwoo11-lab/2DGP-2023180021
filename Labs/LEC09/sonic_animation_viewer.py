@@ -345,29 +345,34 @@ def main() -> None:
     open_canvas(screen_width, screen_height)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
-        font = load_font(str(FONT_PATH), 20)
-        playback = PlaybackState()
-        start_animation(playback, 0, screen_width)
-        previous_time = get_time()
-        while handle_events():
-            current_time = get_time()
-            delta_time = current_time - previous_time
-            previous_time = current_time
-            update_frame(playback, delta_time, screen_width)
-            animation = ANIMATIONS[playback.animation_index]
-            update_position(playback, animation, delta_time, screen_width)
+        font = None
+        try:
+            font = load_font(str(FONT_PATH), 20)
+            playback = PlaybackState()
+            start_animation(playback, 0, screen_width)
+            previous_time = get_time()
+            while handle_events():
+                current_time = get_time()
+                delta_time = current_time - previous_time
+                previous_time = current_time
+                update_frame(playback, delta_time, screen_width)
+                animation = ANIMATIONS[playback.animation_index]
+                update_position(playback, animation, delta_time, screen_width)
 
-            clear_canvas()
-            draw_current_frame(
-                sprite_sheet,
-                animation,
-                playback,
-                screen_width,
-                screen_height,
-            )
-            font.draw(20, screen_height - 32, animation.name, (255, 255, 255))
-            update_canvas()
-            delay(0.01)
+                clear_canvas()
+                draw_current_frame(
+                    sprite_sheet,
+                    animation,
+                    playback,
+                    screen_width,
+                    screen_height,
+                )
+                font.draw(20, screen_height - 32, animation.name, (255, 255, 255))
+                update_canvas()
+                delay(0.01)
+        finally:
+            font = None
+            sprite_sheet = None
     finally:
         close_canvas()
 
