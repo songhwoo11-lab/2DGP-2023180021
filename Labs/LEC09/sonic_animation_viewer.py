@@ -177,13 +177,23 @@ ANIMATIONS: tuple[Animation, ...] = (
 )
 
 
+def handle_events() -> bool:
+    for event in get_events():
+        if event.type == SDL_QUIT:
+            return False
+        if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            return False
+    return True
+
+
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
 
     open_canvas(SCREEN_WIDTH, SCREEN_HEIGHT)
     try:
-        pass
+        while handle_events():
+            delay(0.01)
     finally:
         close_canvas()
 
