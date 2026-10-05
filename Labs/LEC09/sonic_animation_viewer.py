@@ -208,6 +208,21 @@ def handle_events() -> bool:
     return True
 
 
+def draw_frame(
+    sprite_sheet: Image, frame: Frame, center_x: float, center_y: float, scale: int = 1
+) -> None:
+    sprite_sheet.clip_draw(
+        frame.x,
+        525 - frame.y - frame.height,
+        frame.width,
+        frame.height,
+        center_x,
+        center_y,
+        frame.width * scale,
+        frame.height * scale,
+    )
+
+
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
@@ -217,6 +232,14 @@ def main() -> None:
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
         while handle_events():
+            clear_canvas()
+            draw_frame(
+                sprite_sheet,
+                ANIMATIONS[0].frames[0],
+                screen_width / 2,
+                screen_height / 2,
+            )
+            update_canvas()
             delay(0.01)
     finally:
         close_canvas()
