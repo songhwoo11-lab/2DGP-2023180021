@@ -9,8 +9,8 @@ from pico2d import *
 
 BASE_DIR = Path(__file__).resolve().parent
 SPRITE_PATH = BASE_DIR / "sonic-sprite.png"
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 800
+MIN_SCREEN_WIDTH = 600
+MIN_SCREEN_HEIGHT = 800
 SCALE = 4
 FRAME_INTERVAL = 0.1
 REPEAT_COUNT = 5
@@ -177,6 +177,28 @@ ANIMATIONS: tuple[Animation, ...] = (
 )
 
 
+def calculate_canvas_size() -> tuple[int, int]:
+    max_frame_width = max(
+        frame.width for animation in ANIMATIONS for frame in animation.frames
+    )
+    max_frame_height = max(
+        frame.height for animation in ANIMATIONS for frame in animation.frames
+    )
+    max_name_length = max(len(animation.name) for animation in ANIMATIONS)
+
+    required_width = max(
+        MIN_SCREEN_WIDTH,
+        max_frame_width * SCALE + 48,
+        max_name_length * 24 + 48,
+    )
+    required_height = max(
+        MIN_SCREEN_HEIGHT,
+        max_frame_height * SCALE + 48 + 40,
+    )
+    ratio_unit = max((required_width + 2) // 3, (required_height + 3) // 4)
+    return ratio_unit * 3, ratio_unit * 4
+
+
 def handle_events() -> bool:
     for event in get_events():
         if event.type == SDL_QUIT:
@@ -190,7 +212,8 @@ def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
 
-    open_canvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    screen_width, screen_height = calculate_canvas_size()
+    open_canvas(screen_width, screen_height)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
         while handle_events():
