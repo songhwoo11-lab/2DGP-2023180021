@@ -34,6 +34,7 @@ class Animation:
     name: str
     frames: tuple[Frame, ...]
     moves: bool
+    falls: bool = False
 
 
 @dataclass
@@ -44,6 +45,7 @@ class PlaybackState:
     completed_repeats: int = 0
     pause_remaining: float = 0.0
     position_x: float = 0.0
+    position_y: float = 0.0
 
 
 ANIMATIONS: tuple[Animation, ...] = (
@@ -162,7 +164,8 @@ ANIMATIONS: tuple[Animation, ...] = (
             Frame(184, 341, 40, 28),
             Frame(232, 341, 39, 27),
         ),
-        moves=True,
+        moves=False,
+        falls=True,
     ),
     Animation(
         "달리기 자세",
@@ -200,6 +203,10 @@ def validate_animation_data() -> None:
         raise ValueError("Animation names must be unique.")
 
     for animation in ANIMATIONS:
+        if animation.moves and animation.falls:
+            raise ValueError(
+                f"Animation cannot move horizontally and fall: {animation.name}"
+            )
         if not animation.frames:
             raise ValueError(f"Animation has no frames: {animation.name}")
         for frame in animation.frames:
@@ -268,17 +275,21 @@ def draw_current_frame(
     screen_height: int,
 ) -> None:
     center_x = state.position_x if animation.moves else screen_width / 2
+    center_y = state.position_y if animation.falls else screen_height / 2
     draw_frame(
         sprite_sheet,
         animation.frames[state.frame_index],
         center_x,
-        screen_height / 2,
+        center_y,
         scale=SCALE,
     )
 
 
 def start_animation(
-    state: PlaybackState, animation_index: int, screen_width: int
+    state: PlaybackState,
+    animation_index: int,
+    screen_width: int,
+    screen_height: int,
 ) -> None:
     animation = ANIMATIONS[animation_index]
     state.animation_index = animation_index
@@ -291,16 +302,21 @@ def start_animation(
         state.position_x = -widest_frame / 2
     else:
         state.position_x = screen_width / 2
+    if animation.falls:
+        tallest_frame = max(frame.height for frame in animation.frames) * SCALE
+        state.position_y = screen_height + tallest_frame / 2
+    else:
+        state.position_y = screen_height / 2
 
 
 def update_frame(
-    state: PlaybackState, delta_time: float, screen_width: int
+    state: PlaybackState, delta_time: float, screen_width: int, screen_height: int
 ) -> None:
     if state.pause_remaining > 0.0:
         state.pause_remaining = max(0.0, state.pause_remaining - delta_time)
         if state.pause_remaining == 0.0:
             next_index = (state.animation_index + 1) % len(ANIMATIONS)
-            start_animation(state, next_index, screen_width)
+            start_animation(state, next_index, screen_width, screen_height)
         return
 
     animation = ANIMATIONS[state.animation_index]
@@ -323,8 +339,24 @@ def update_position(
     animation: Animation,
     delta_time: float,
     screen_width: int,
+    screen_height: int,
 ) -> None:
-    if animation.moves and state.pause_remaining == 0.0:
+    if state.pause_remaining > 0.0:
+        return
+    if animation.falls:
+        tallest_frame = max(frame.height for frame in animation.frames) * SCALE
+        half_height = tallest_frame / 2
+        fall_distance = screen_height + tallest_frame
+        fall_duration = len(animation.frames) * FRAME_INTERVAL * REPEAT_COUNT
+        fall_speed = fall_distance / fall_duration
+        state.position_y -= fall_speed * delta_time
+        if state.position_y < -half_height:
+            if state.completed_repeats >= REPEAT_COUNT - 1:
+                state.position_y = -half_height
+            else:
+                overflow = (-half_height - state.position_y) % fall_distance
+                state.position_y = screen_height + half_height - overflow
+    elif animation.moves:
         state.position_x += MOVE_SPEED * delta_time
         half_width = max(frame.width for frame in animation.frames) * SCALE / 2
         right_edge = screen_width + half_width
@@ -349,15 +381,18 @@ def main() -> None:
         try:
             font = load_font(str(FONT_PATH), 20)
             playback = PlaybackState()
-            start_animation(playback, 0, screen_width)
+            start_animation(playback, 0, screen_width, screen_height)
             previous_time = get_time()
             while handle_events():
                 current_time = get_time()
                 delta_time = current_time - previous_time
                 previous_time = current_time
-                update_frame(playback, delta_time, screen_width)
                 animation = ANIMATIONS[playback.animation_index]
-                update_position(playback, animation, delta_time, screen_width)
+                update_position(
+                    playback, animation, delta_time, screen_width, screen_height
+                )
+                update_frame(playback, delta_time, screen_width, screen_height)
+                animation = ANIMATIONS[playback.animation_index]
 
                 clear_canvas()
                 draw_current_frame(
