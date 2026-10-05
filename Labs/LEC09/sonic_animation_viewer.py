@@ -16,6 +16,7 @@ MIN_SCREEN_WIDTH = 600
 MIN_SCREEN_HEIGHT = 800
 SCALE = 4
 FRAME_INTERVAL = 0.1
+MOVE_SPEED = 200.0
 REPEAT_COUNT = 5
 PAUSE_DURATION = 1.0
 
@@ -303,6 +304,13 @@ def update_frame(state: PlaybackState, delta_time: float) -> None:
             state.frame_index = 0
 
 
+def update_position(
+    state: PlaybackState, animation: Animation, delta_time: float
+) -> None:
+    if animation.moves:
+        state.position_x += MOVE_SPEED * delta_time
+
+
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
@@ -323,6 +331,7 @@ def main() -> None:
             previous_time = current_time
             update_frame(playback, delta_time)
             animation = ANIMATIONS[playback.animation_index]
+            update_position(playback, animation, delta_time)
 
             clear_canvas()
             draw_current_frame(
