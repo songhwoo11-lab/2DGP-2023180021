@@ -9,6 +9,7 @@ from pico2d import *
 
 BASE_DIR = Path(__file__).resolve().parent
 SPRITE_PATH = BASE_DIR / "sonic-sprite.png"
+FONT_PATH = Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts" / "malgun.ttf"
 SHEET_WIDTH = 399
 SHEET_HEIGHT = 525
 MIN_SCREEN_WIDTH = 600
@@ -287,12 +288,15 @@ def update_frame(state: PlaybackState, delta_time: float) -> None:
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
+    if not FONT_PATH.is_file():
+        raise FileNotFoundError(f"Korean font not found: {FONT_PATH}")
     validate_animation_data()
 
     screen_width, screen_height = calculate_canvas_size()
     open_canvas(screen_width, screen_height)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
+        font = load_font(str(FONT_PATH), 20)
         playback = PlaybackState()
         previous_time = get_time()
         while handle_events():
@@ -310,6 +314,7 @@ def main() -> None:
                 screen_height / 2,
                 scale=SCALE,
             )
+            font.draw(20, screen_height - 32, animation.name, (255, 255, 255))
             update_canvas()
             delay(0.01)
     finally:
