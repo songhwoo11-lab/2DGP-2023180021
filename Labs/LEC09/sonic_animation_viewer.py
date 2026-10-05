@@ -34,6 +34,13 @@ class Animation:
     moves: bool
 
 
+@dataclass
+class PlaybackState:
+    animation_index: int = 0
+    frame_index: int = 0
+    frame_elapsed: float = 0.0
+
+
 ANIMATIONS: tuple[Animation, ...] = (
     Animation(
         "대기·자세 전환",
@@ -248,6 +255,13 @@ def draw_frame(
     )
 
 
+def update_frame(state: PlaybackState, animation: Animation, delta_time: float) -> None:
+    state.frame_elapsed += delta_time
+    while state.frame_elapsed >= FRAME_INTERVAL:
+        state.frame_elapsed -= FRAME_INTERVAL
+        state.frame_index = (state.frame_index + 1) % len(animation.frames)
+
+
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
@@ -257,11 +271,19 @@ def main() -> None:
     open_canvas(screen_width, screen_height)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
+        playback = PlaybackState()
+        previous_time = get_time()
         while handle_events():
+            current_time = get_time()
+            delta_time = current_time - previous_time
+            previous_time = current_time
+            animation = ANIMATIONS[playback.animation_index]
+            update_frame(playback, animation, delta_time)
+
             clear_canvas()
             draw_frame(
                 sprite_sheet,
-                ANIMATIONS[0].frames[0],
+                animation.frames[playback.frame_index],
                 screen_width / 2,
                 screen_height / 2,
                 scale=SCALE,
