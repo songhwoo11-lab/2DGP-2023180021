@@ -277,16 +277,30 @@ def draw_current_frame(
     )
 
 
-def update_frame(state: PlaybackState, delta_time: float) -> None:
+def start_animation(
+    state: PlaybackState, animation_index: int, screen_width: int
+) -> None:
+    animation = ANIMATIONS[animation_index]
+    state.animation_index = animation_index
+    state.frame_index = 0
+    state.frame_elapsed = 0.0
+    state.completed_repeats = 0
+    state.pause_remaining = 0.0
+    if animation.moves:
+        widest_frame = max(frame.width for frame in animation.frames) * SCALE
+        state.position_x = -widest_frame / 2
+    else:
+        state.position_x = screen_width / 2
+
+
+def update_frame(
+    state: PlaybackState, delta_time: float, screen_width: int
+) -> None:
     if state.pause_remaining > 0.0:
         state.pause_remaining = max(0.0, state.pause_remaining - delta_time)
         if state.pause_remaining == 0.0:
-            state.animation_index = min(
-                state.animation_index + 1, len(ANIMATIONS) - 1
-            )
-            state.frame_index = 0
-            state.frame_elapsed = 0.0
-            state.completed_repeats = 0
+            next_index = min(state.animation_index + 1, len(ANIMATIONS) - 1)
+            start_animation(state, next_index, screen_width)
         return
 
     animation = ANIMATIONS[state.animation_index]
@@ -332,13 +346,14 @@ def main() -> None:
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
         font = load_font(str(FONT_PATH), 20)
-        playback = PlaybackState(position_x=screen_width / 2)
+        playback = PlaybackState()
+        start_animation(playback, 0, screen_width)
         previous_time = get_time()
         while handle_events():
             current_time = get_time()
             delta_time = current_time - previous_time
             previous_time = current_time
-            update_frame(playback, delta_time)
+            update_frame(playback, delta_time, screen_width)
             animation = ANIMATIONS[playback.animation_index]
             update_position(playback, animation, delta_time, screen_width)
 
