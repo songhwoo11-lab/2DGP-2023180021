@@ -175,3 +175,18 @@ ANIMATIONS: tuple[Animation, ...] = (
         moves=False,
     ),
 )
+
+
+def main() -> None:
+    if not SPRITE_PATH.is_file():
+        raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
+
+    open_canvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    try:
+        pass
+    finally:
+        close_canvas()
+
+
+if __name__ == "__main__":
+    main()
