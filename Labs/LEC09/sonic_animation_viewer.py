@@ -39,6 +39,8 @@ class PlaybackState:
     animation_index: int = 0
     frame_index: int = 0
     frame_elapsed: float = 0.0
+    completed_repeats: int = 0
+    pause_remaining: float = 0.0
 
 
 ANIMATIONS: tuple[Animation, ...] = (
@@ -255,11 +257,31 @@ def draw_frame(
     )
 
 
-def update_frame(state: PlaybackState, animation: Animation, delta_time: float) -> None:
+def update_frame(state: PlaybackState, delta_time: float) -> None:
+    if state.pause_remaining > 0.0:
+        state.pause_remaining = max(0.0, state.pause_remaining - delta_time)
+        if state.pause_remaining == 0.0:
+            state.animation_index = min(
+                state.animation_index + 1, len(ANIMATIONS) - 1
+            )
+            state.frame_index = 0
+            state.frame_elapsed = 0.0
+            state.completed_repeats = 0
+        return
+
+    animation = ANIMATIONS[state.animation_index]
     state.frame_elapsed += delta_time
     while state.frame_elapsed >= FRAME_INTERVAL:
         state.frame_elapsed -= FRAME_INTERVAL
-        state.frame_index = (state.frame_index + 1) % len(animation.frames)
+        state.frame_index += 1
+        if state.frame_index == len(animation.frames):
+            state.completed_repeats += 1
+            if state.completed_repeats == REPEAT_COUNT:
+                state.frame_index -= 1
+                state.pause_remaining = PAUSE_DURATION
+                state.frame_elapsed = 0.0
+                break
+            state.frame_index = 0
 
 
 def main() -> None:
@@ -277,8 +299,8 @@ def main() -> None:
             current_time = get_time()
             delta_time = current_time - previous_time
             previous_time = current_time
+            update_frame(playback, delta_time)
             animation = ANIMATIONS[playback.animation_index]
-            update_frame(playback, animation, delta_time)
 
             clear_canvas()
             draw_frame(
