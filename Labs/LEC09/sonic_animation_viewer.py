@@ -299,7 +299,7 @@ def update_frame(
     if state.pause_remaining > 0.0:
         state.pause_remaining = max(0.0, state.pause_remaining - delta_time)
         if state.pause_remaining == 0.0:
-            next_index = min(state.animation_index + 1, len(ANIMATIONS) - 1)
+            next_index = (state.animation_index + 1) % len(ANIMATIONS)
             start_animation(state, next_index, screen_width)
         return
 
