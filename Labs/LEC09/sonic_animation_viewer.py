@@ -9,6 +9,8 @@ from pico2d import *
 
 BASE_DIR = Path(__file__).resolve().parent
 SPRITE_PATH = BASE_DIR / "sonic-sprite.png"
+SHEET_WIDTH = 399
+SHEET_HEIGHT = 525
 MIN_SCREEN_WIDTH = 600
 MIN_SCREEN_HEIGHT = 800
 SCALE = 4
@@ -177,6 +179,29 @@ ANIMATIONS: tuple[Animation, ...] = (
 )
 
 
+def validate_animation_data() -> None:
+    if not ANIMATIONS:
+        raise ValueError("At least one animation must be registered.")
+
+    names = [animation.name for animation in ANIMATIONS]
+    if len(names) != len(set(names)):
+        raise ValueError("Animation names must be unique.")
+
+    for animation in ANIMATIONS:
+        if not animation.frames:
+            raise ValueError(f"Animation has no frames: {animation.name}")
+        for frame in animation.frames:
+            if frame.width <= 0 or frame.height <= 0:
+                raise ValueError(f"Invalid frame size in {animation.name}: {frame}")
+            if (
+                frame.x < 0
+                or frame.y < 0
+                or frame.x + frame.width > SHEET_WIDTH
+                or frame.y + frame.height > SHEET_HEIGHT
+            ):
+                raise ValueError(f"Frame is outside the sprite sheet: {frame}")
+
+
 def calculate_canvas_size() -> tuple[int, int]:
     max_frame_width = max(
         frame.width for animation in ANIMATIONS for frame in animation.frames
@@ -226,6 +251,7 @@ def draw_frame(
 def main() -> None:
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"Sprite sheet not found: {SPRITE_PATH}")
+    validate_animation_data()
 
     screen_width, screen_height = calculate_canvas_size()
     open_canvas(screen_width, screen_height)
