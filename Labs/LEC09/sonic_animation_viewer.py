@@ -238,6 +238,7 @@ def main() -> None:
                 ANIMATIONS[0].frames[0],
                 screen_width / 2,
                 screen_height / 2,
+                scale=SCALE,
             )
             update_canvas()
             delay(0.01)
