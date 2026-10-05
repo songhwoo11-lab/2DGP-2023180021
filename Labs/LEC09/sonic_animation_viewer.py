@@ -42,6 +42,7 @@ class PlaybackState:
     frame_elapsed: float = 0.0
     completed_repeats: int = 0
     pause_remaining: float = 0.0
+    position_x: float = 0.0
 
 
 ANIMATIONS: tuple[Animation, ...] = (
@@ -258,6 +259,23 @@ def draw_frame(
     )
 
 
+def draw_current_frame(
+    sprite_sheet: Image,
+    animation: Animation,
+    state: PlaybackState,
+    screen_width: int,
+    screen_height: int,
+) -> None:
+    center_x = state.position_x if animation.moves else screen_width / 2
+    draw_frame(
+        sprite_sheet,
+        animation.frames[state.frame_index],
+        center_x,
+        screen_height / 2,
+        scale=SCALE,
+    )
+
+
 def update_frame(state: PlaybackState, delta_time: float) -> None:
     if state.pause_remaining > 0.0:
         state.pause_remaining = max(0.0, state.pause_remaining - delta_time)
@@ -297,7 +315,7 @@ def main() -> None:
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
         font = load_font(str(FONT_PATH), 20)
-        playback = PlaybackState()
+        playback = PlaybackState(position_x=screen_width / 2)
         previous_time = get_time()
         while handle_events():
             current_time = get_time()
@@ -307,12 +325,12 @@ def main() -> None:
             animation = ANIMATIONS[playback.animation_index]
 
             clear_canvas()
-            draw_frame(
+            draw_current_frame(
                 sprite_sheet,
-                animation.frames[playback.frame_index],
-                screen_width / 2,
-                screen_height / 2,
-                scale=SCALE,
+                animation,
+                playback,
+                screen_width,
+                screen_height,
             )
             font.draw(20, screen_height - 32, animation.name, (255, 255, 255))
             update_canvas()
