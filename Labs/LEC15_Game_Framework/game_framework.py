@@ -39,7 +39,12 @@ def run(start_mode):
         start_mode.init()
         while running:
             stack[-1].handle_events()
-            stack[-1].update()
+            update_start = len(stack) - 1
+            while (update_start > 0 and
+                   getattr(stack[update_start], 'update_underlying', False)):
+                update_start -= 1
+            for mode in stack[update_start:]:
+                mode.update()
             stack[-1].render()
             time.sleep(0.02)
     finally:
